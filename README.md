@@ -9,10 +9,10 @@
   git clone git@github.com:radiocontroller/jq22-check-in.git
   ```
 
-3. 将Dockerfile中的环境变量替换成你自己的cookie信息(注意: 我将ASP.NET_SessionId改为了ASP_NET_SessionId, 因为环境变量不允许有.这个符号)
+3. 将lib/tasks/crawler.rake中的变量替换成你自己的cookie信息
 
   ```
-  MydlCookie="xx" Myinfo="xx" cokbut="xx" CityCookie="xx" ASP_NET_SessionId="xx"
+  h = {"MydlCookie"=>ENV["MydlCookie"], "Myinfo"=>ENV["Myinfo"], "cokbut"=>ENV["cokbut"], "CityCookie"=>ENV["CityCookie"], "ASP.NET_SessionId"=>ENV["ASP_NET_SessionId"]}
   ```
 
 4. 进行构建镜像并运行镜像

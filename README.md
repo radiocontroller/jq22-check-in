@@ -6,7 +6,7 @@
 2. 拉取代码
 
   ```
-  git clone git@github.com:radiocontroller/jq22-check-in.git
+  git clone https://github.com/radiocontroller/jq22-check-in.git
   ```
 
 3. 将config.yml.example文件改为config.yml, 并且补充里面的配置. 里面有cookie和email的配置, cookie信息在你登录之后从浏览器中获取(获取jq22.com域名下的cookie), 如果不需要email配置删除即可

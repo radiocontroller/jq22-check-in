@@ -9,7 +9,7 @@
   git clone git@github.com:radiocontroller/jq22-check-in.git
   ```
 
-3. 将lib/tasks/crawler.rake中的变量替换成你自己的cookie信息
+3. 将config.yml.example文件改为config.yml, 并且补充里面的配置. 里面有cookie和email的配置, 如果不需要email配置删除即可
 
   ```
   h = {"MydlCookie"=>ENV["MydlCookie"], "Myinfo"=>ENV["Myinfo"], "cokbut"=>ENV["cokbut"], "CityCookie"=>ENV["CityCookie"], "ASP.NET_SessionId"=>ENV["ASP_NET_SessionId"]}

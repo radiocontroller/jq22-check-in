@@ -1,0 +1,5 @@
+source 'http://gems.ruby-china.org'
+gem 'watir', '6.2.0'
+gem 'selenium-webdriver', '3.3.0'
+gem 'whenever'
+gem 'rake'

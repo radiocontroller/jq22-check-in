@@ -11,6 +11,7 @@ namespace :crawler do
     b.goto url
     b.as(class: 'mybut').last.click
     b.div(id: 'exampleModal').iframes[0].inputs(class: 'btn-success')[0].click
+    File.open('log/crawl.log', 'a') { |f| f.puts "#{Time.now.to_s} #{b.div(id: 'exampleModal').iframes[0].divs[2].h4.text}" }
     b.close
   end
 end

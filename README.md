@@ -6,22 +6,36 @@
 2. 拉取代码
 
   ```
-  git clone git@github.com:radiocontroller/jq22-check-in.git
+  git clone https://github.com/radiocontroller/jq22-check-in.git
   ```
 
-3. 将config.yml.example文件改为config.yml, 并且补充里面的配置. 里面有cookie和email的配置, 如果不需要email配置删除即可
+3. 将config.yml.example文件改为config.yml, 并且补充里面的配置. 里面有cookie和email的配置, cookie信息在你登录之后从浏览器中获取(获取jq22.com域名下的cookie), 如果不需要email配置删除即可
 
   ```
-  h = {"MydlCookie"=>ENV["MydlCookie"], "Myinfo"=>ENV["Myinfo"], "cokbut"=>ENV["cokbut"], "CityCookie"=>ENV["CityCookie"], "ASP.NET_SessionId"=>ENV["ASP_NET_SessionId"]}
+  cookie:
+    MydlCookie: 1
+    Myinfo: 2
+    cokbut: 3
+    CityCookie: 4
+    ASP.NET_SessionId: 5
+  email:
+    smtp_server: smtp.163.com
+    port: 25
+    domain: 163.com
+    account: xxx@163.com
+    password: xxx
+    receiver: xxx@qq.com
+    schema: plain
+
   ```
 
-4. 进行构建镜像并运行镜像
+4. 进行构建镜像并启动容器
 
   ```
   ./build.sh
   ```
 
-5. 进入镜像
+5. 进入容器
 
   ```
   ./enter.sh
@@ -33,7 +47,7 @@
   crontab -e
   ```
 
-7. 停止镜像
+7. 停止容器
 
   ```
   ./stop.sh

@@ -1,2 +1,2 @@
 #!/bin/bash
-docker rm -f $(docker ps -aqf "name=jq22-crawler")
+docker rm -f $(docker ps -aqf "name=jq22-check-in")

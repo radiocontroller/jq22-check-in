@@ -26,6 +26,7 @@ From: jquery插件库自动签到邮件 <#{email["account"]}>
 To: Destination Address <#{email["receiver"]}>
 Subject: 今日签到成功提示
 Date: #{Time.now.to_s}
+
 #{message}
 END_OF_MESSAGE
       smtp.send_message msgstr, email["account"], email["receiver"]

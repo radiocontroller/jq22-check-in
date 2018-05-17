@@ -14,8 +14,12 @@ namespace :crawler do
     b.as(class: 'mybut').last.click
     btn = b.div(id: 'exampleModal').iframes[0].inputs(class: 'btn-success')[0]
     btn.click if !btn.disabled?
-    message = b.div(id: 'exampleModal').iframes[0].divs[2].h4.text
-    File.open('log/crawl.log', 'a') { |f| f.puts "#{Time.now.to_s} #{message}" }
+    # 签到天数信息
+    title = b.div(id: 'exampleModal').iframes[0].divs[2].h4.text
+    File.open('log/crawl.log', 'a') { |f| f.puts "#{Time.now.to_s} #{title}" }
+    # 剩余JQ币信息
+    li = b.lis(class: 'list-group-item')[1]
+    message = li.text.split("\n").map(&:strip).reverse.join(": ")
     b.close
 
     email = config["email"]
@@ -27,7 +31,7 @@ To: Destination Address <#{email["receiver"]}>
 Subject: 今日签到成功提示
 Date: #{Time.now.to_s}
 
-#{message}
+#{title}, #{message}
 END_OF_MESSAGE
       smtp.send_message msgstr, email["account"], email["receiver"]
     end

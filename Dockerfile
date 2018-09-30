@@ -12,8 +12,8 @@ RUN gem sources --add https://gems.ruby-china.org/ --remove https://rubygems.org
     && gem install ffi -v '1.9.23' \
     && bundle install
 COPY . $DIR
-RUN wget -P $DIR https://bitbucket.org/ariya/phantomjs/downloads/$PHANTOM_JS.tar.bz2 \
-    && tar xvjf $DIR/$PHANTOM_JS.tar.bz2 \
+#RUN wget -P $DIR https://bitbucket.org/ariya/phantomjs/downloads/$PHANTOM_JS.tar.bz2 \
+RUN tar xvjf $DIR/$PHANTOM_JS.tar.bz2 \
     && mv $DIR/$PHANTOM_JS /usr/local/share \
     && ln -sf /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/local/bin \
     && ln -sf /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/bin/phantomjs \

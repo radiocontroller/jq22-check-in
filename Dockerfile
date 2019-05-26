@@ -7,7 +7,7 @@ RUN apt-get update -qq && apt-get install -y build-essential libpq-dev && apt-ge
 RUN mkdir $DIR
 WORKDIR $DIR
 COPY Gemfile* $DIR/
-RUN gem sources --add https://gems.ruby-china.org/ --remove https://rubygems.org/ \
+RUN gem sources --add https://gems.ruby-china.com/ --remove https://rubygems.org/ \
     && gem install bundler -v '1.16.1' \
     && gem install ffi -v '1.9.23' \
     && bundle install

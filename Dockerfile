@@ -1,6 +1,6 @@
 FROM ruby:2.6.1
 ENV DIR="/jq22_check_in" GEM_HOME="/usr/local/bundle" PATH="$GEM_HOME/bin:$PATH"
-RUN apt-get update -qq && apt-get install -y build-essential libpq-dev && apt-get install -y cron vim wget
+RUN apt-get update -qq && apt-get install -y build-essential libpq-dev && apt-get install -y cron vim
 RUN mkdir $DIR
 WORKDIR $DIR
 COPY Gemfile* $DIR/

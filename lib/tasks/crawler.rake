@@ -1,26 +1,10 @@
 namespace :crawler do
   task :execute do
-    require 'watir'
     require 'yaml'
     require 'net/smtp'
     require 'rest-client'
+    require 'nokogiri'
     config = YAML.load(File.open('config.yml', 'r'))
-    login_url = 'http://www.jq22.com/signIn.aspx'
-
-    capabilities = Selenium::WebDriver::Remote::Capabilities.phantomjs("phantomjs.page.settings.userAgent" => "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1468.0 Safari/537.36")
-    driver = Selenium::WebDriver.for :phantomjs, :desired_capabilities => capabilities
-    b = Watir::Browser.new driver
-    b.goto login_url
-    config["cookie"].each { |k, v| b.cookies.add k, v, domain: ".jq22.com" }
-    b.goto login_url
-
-    html = b.html
-    params = {
-      '__VIEWSTATEGENERATOR' => html.scan(/name="__VIEWSTATEGENERATOR".*?value="(.*?)"/).flatten[0],
-      '__EVENTVALIDATION' => html.scan(/name="__EVENTVALIDATION".*?value="(.*?)"/).flatten[0],
-      '__VIEWSTATE' => html.scan(/name="__VIEWSTATE".*?value="(.*?)"/).flatten[0],
-      'Button1' => '签 到'
-    }
     headers = {
       'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36',
       'Content-Type' => 'application/x-www-form-urlencoded',
@@ -33,6 +17,17 @@ namespace :crawler do
       'Cache-Control' => 'max-age=0',
       'Connection' => 'keep-alive'
     }
+
+    login_url = 'http://www.jq22.com/signIn.aspx'
+    html = RestClient::Request.execute(url: login_url, method: :get, headers: headers, cookies: config['cookie']).body
+    params = {
+      '__VIEWSTATEGENERATOR' => html.scan(/name="__VIEWSTATEGENERATOR".*?value="(.*?)"/).flatten[0],
+      '__EVENTVALIDATION' => html.scan(/name="__EVENTVALIDATION".*?value="(.*?)"/).flatten[0],
+      '__VIEWSTATE' => html.scan(/name="__VIEWSTATE".*?value="(.*?)"/).flatten[0],
+      'Button1' => '签 到'
+    }
+
+    # 签到
     RestClient::Request.execute(
       method: :post,
       url: login_url,
@@ -42,28 +37,28 @@ namespace :crawler do
     ) rescue nil
 
     # 签到天数文案
-    title = b.h4s[0].text
+    title = html.scan(%r{<h4>(.*)<\/h4>}).flatten[0]
     File.open('log/crawl.log', 'a') { |f| f.puts "#{Time.now.to_s} #{title}" }
 
     # 剩余JQ币信息
-    b.goto 'http://www.jq22.com/myhome'
-    li = b.lis(class: 'list-group-item')[1]
-    message = li.text.split("\n").map(&:strip).reverse.join(": ")
-    b.close
+    home_url = 'http://www.jq22.com/myhome'
+    resp = RestClient::Request.execute(url: home_url, method: :get, headers: headers, cookies: config['cookie'])
+    doc = Nokogiri::HTML(resp.body)
+    content = doc.search('li.list-group-item')[1].children.text.gsub(/\s+/, '')
 
-    email = config["email"]
-    if !email.nil?
-      smtp = Net::SMTP.start(email["smtp_server"], email["port"], email["domain"], email["account"], email["password"], email["schema"].to_sym)
-      msgstr = <<END_OF_MESSAGE
-From: jquery插件库自动签到邮件 <#{email["account"]}>
-To: Destination Address <#{email["receiver"]}>
-Subject: 今日签到成功提示
-Date: #{Time.now.to_s}
+    email = config['email']
+    return if email.nil?
 
-#{title}, #{message}
-END_OF_MESSAGE
-      smtp.send_message msgstr, email["account"], email["receiver"]
-    end
-
+    smtp = Net::SMTP.start(email['smtp_server'], email['port'], email['domain'],
+                           email['account'], email['password'], email['schema'].to_sym)
+    msgstr = <<~END_OF_MESSAGE
+      From: jq22自动签到邮件 <#{email['account']}>
+      To: Destination Address <#{email['receiver']}>
+      Subject: 今日签到成功
+      Date: #{Time.now.to_s}
+      
+      #{title}, #{content}
+    END_OF_MESSAGE
+    smtp.send_message msgstr, email['account'], email['receiver']
   end
 end

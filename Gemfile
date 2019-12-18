@@ -1,7 +1,6 @@
 source 'https://gems.ruby-china.com'
-gem 'watir', '6.2.0'
-gem 'selenium-webdriver', '3.3.0'
 gem 'whenever'
 gem 'rake'
 gem 'activesupport', '~> 5.0'
 gem 'rest-client'
+gem 'nokogiri'

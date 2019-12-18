@@ -10,7 +10,7 @@
   cd jq22-check-in/
   ```
 
-3. 将config.yml.example文件改为config.yml, 并且补充里面的配置. 里面有cookie和email的配置, cookie信息在你登录之后从浏览器中获取(获取jq22.com域名下的cookie), 如果不需要email配置删除即可
+3. 将config.yml.example文件改为config.yml, 并且补充里面的配置. 里面有cookie和email的配置, 1. cookie信息在你登录之后从浏览器中获取(获取jq22.com域名下的cookie), 2. 如果不需要email配置删除即可
 
   ```
   cookie:
@@ -30,10 +30,9 @@
 
   ```
 
-4. 进行构建镜像并启动容器, 先下载依赖包phantomjs-2.1.1-linux-x86_64.tar.bz2
+4. 进行构建镜像并启动容器
 
   ```
-  wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2
   ./build.sh
   ```
 

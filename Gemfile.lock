@@ -20,7 +20,7 @@ GEM
     mini_portile2 (2.4.0)
     minitest (5.11.3)
     netrc (0.11.0)
-    nokogiri (1.10.7)
+    nokogiri (1.10.8)
       mini_portile2 (~> 2.4.0)
     rake (12.3.1)
     rest-client (2.0.2)

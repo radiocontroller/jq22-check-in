@@ -1,6 +1,6 @@
 source 'https://gems.ruby-china.com'
 gem 'whenever'
 gem 'rake'
-gem 'activesupport', '~> 5.2'
+gem 'activesupport', '~> 6.0'
 gem 'rest-client'
 gem 'nokogiri'
